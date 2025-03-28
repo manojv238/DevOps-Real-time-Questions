@@ -1,1 +1,8 @@
+1. " 🛠️ Transition from Monolithic to Microservices" 
+   Consider a company build some kind of monolithic architecture that handles a lot of products okay,
+   now company is expanding and today industry is scalling so companies is expanding and then,
+   monolithic architecture started causing problems so how do you think the company should shift it from
+   monolithic to microservices and how to do deploy their containers and how can they implement kubernetes in it?
+
+EXPLAIN IN THIS ANSWER:-
 
