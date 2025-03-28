@@ -1,8 +1,38 @@
-1. " 🛠️ Transition from Monolithic to Microservices" 
+1. "Transition from Monolithic to Microservices" 
    Consider a company build some kind of monolithic architecture that handles a lot of products okay,
    now company is expanding and today industry is scalling so companies is expanding and then,
    monolithic architecture started causing problems so how do you think the company should shift it from
    monolithic to microservices and how to do deploy their containers and how can they implement kubernetes in it?
 
 EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Monolithic Architecture is Everything built a single unit(code base), tightly coupled like different application(front-end,backend,DB)
+   run as single code base.
+   It’s simple to develop but hard to scalability —any change requires again will do redeploying the entire system.
+
+👉 Microservices Architecture breaks the application into independent services, 
+   each handling a specific function and communicating via APIs. 
+   Each service can be deployed, scaled, and updated separately, making it more flexible and better fault isolation.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+2. "Can you explain the Overview of Kubernetes Architecture"
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Kubernetes mainly consists of two components we can say one is MASTER NODE and second one is WORKER NODE.
+   so in masternode itself there are four components,
+1.Kube controller manager
+2.kube API-Server
+3.kube schduler
+4.etcd (database)
+
+
+
+
+
+
+
+
+
+
 
