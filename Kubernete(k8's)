@@ -8,13 +8,13 @@ In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
 
 4. What methods are available to expose Kubernetes services to external users, and how do they differ?
 
-5. How would you deploy an application in Kubernetes to ensure zero downtime during updates?
+5. How would you deploy an application in Kubernetes to ensure zero downtime during updates?"(Rolling upadate Stratagy)"
 
 6. Can you explain the difference between stateful and stateless applications, and how each is managed in Kubernetes?
 
 7. How do you handle persistent data in Kubernetes, and what are Persistent Volumes (PVs) and Persistent Volume Claims (PVCs)?
 
-8. Describe the process of scaling applications in Kubernetes both horizontally and vertically?
+8. Describe the process manually of scaling applications in Kubernetes both horizontally and vertically?
 
 9. What are ConfigMaps and Secrets in Kubernetes, and how are they used?
 
@@ -41,6 +41,24 @@ In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
 20. What is a Kubernetes Custom Resource Definition (CRD), and how can it be used to extend Kubernetes functionality?
 
 21. What is the purpose of Operators?
+
+22. You have a Kubernetes pod that is stuck in CrashLoopBackOff . How do you diagnose and fix it?
+
+23. You need to restrict access to a Kubernetes service based on labels. How do you achieve this?
+
+24. You want to upgrade a deployment to a new version. How do you perform a rolling update in Kubernetes?
+
+25. You want to increase the memory limit of a pod. How do you modify the pod's resource limits?
+
+26.  You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
+
+27. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
+    Explain the steps you would take to replace the node without affecting the availability of applications running on the cluster?
+
+28.  A Kubernetes pod is stuck in a "Pending" state. What could be the possible reasons, and how would you troubleshoot it?
+
+29.  You have a Kubernetes Deployment with multiple replicas, and some pods arefailing health checks. 
+     How would you identify the root cause and fix it?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. How do you think the company should shift it from Monolithic to Microservices? 
@@ -181,10 +199,58 @@ we use Persistent Volumes (PVs) and Persistent Volume Claims (PVCs).
 🔹 Persistent Volume Claim (PVC) – A request made by a pod to use storage resource. 
    The pod doesn’t directly ask for a disk; instead, it asks for a PVC, and Kubernetes matches it with an available PV.
 
-How Persistent Storage Works in Kubernetes:
-1️⃣ Create a PV – Defines storage (e.g., EBS in AWS, NFS, Ceph, etc.).
+How Persistent Storage Works in Kubernetes in pod:
+1️⃣ Create a PV – Defines storage (e.g., EBS in AWS, NFS, etc.).
+Example PV YAML (for a local storage volume):
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  capacity:
+    storage: 5Gi      ###### Defines the storage capacity
+  accessModes:
+    - ReadWriteOnce     ####### Defines how the volume can be accessed (RWO, RWX, ROX)
+  persistentVolumeReclaimPolicy: Retain      ####### What happens when PVC is deleted (Retain, Recycle, Delete)
+  storageClassName: manual      ####### Storage class that matches the PVC
+  hostPath:
+    path: "/mnt/data"     ####### Path to local storage on the node
+
 2️⃣ Create a PVC – A pod requests storage by creating a claim.
-3️⃣ Pod uses the PVC – Kubernetes binds the PVC to a suitable PV, and the pod gets persistent storage.
+Example PVC YAML:
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce    ####### Should match PV access mode
+  resources:
+    requests:
+      storage: 5Gi    ####### Should match PV capacity
+  storageClassName: manual   ####### Must match the PV storage class
+
+3️⃣ Attach the PVC to a Pod – Kubernetes binds the PVC to a suitable PV, and the pod gets persistent storage.
+Example Pod using PVC:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  volumes:
+    - name: my-storage
+      persistentVolumeClaim:
+        claimName: my-pvc   ####### This references the PVC created earlier
+  containers:
+    - name: my-container
+      image: nginx
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: my-storage
+
 4️⃣ Even if the pod restarts, the data remains because it is stored outside the pod.
 
 💡 Example: Imagine a MySQL database running in Kubernetes. If the pod restarts without persistent storage, all data is lost. 
@@ -192,54 +258,65 @@ How Persistent Storage Works in Kubernetes:
    So, PVs provide actual storage, and PVCs let pods claim that storage. This ensures data persistence in Kubernetes!"
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-8. Describe the process of scaling applications in Kubernetes both horizontally and vertically?
+8. Describe the process manually of scaling applications in Kubernetes both horizontally and vertically?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "To manually scale a Kubernetes Deployment, I can use kubectl scale deployment <name> --replicas=<count> for horizontal scaling. 
+    Alternatively, I can modify the Deployment YAML file and set the desired number of replicas. 
+    If vertical scaling is needed, I update the CPU and memory requests/limits in the pod spec and apply the changes.
+    This ensures efficient resource utilization based on workload demands."
+
 "In Kubernetes, there are two ways to scale an application: Horizontally and Vertically".
 
-1️⃣ Horizontal Scaling (Scaling Out/In):
-👉 This means adding or removing pods to handle varying loads.
-👉 Kubernetes does this automatically using the Horizontal Pod Autoscaler (HPA).
-👉 HPA monitors metrics like CPU or memory usage and scales pods up or down as needed.
+🔹 Horizontal Scaling (Increasing/Decreasing Replicas):-
+1️⃣ used kubctl cmd To manually increase or decrease the number of replicas:
+👉 kubectl scale deployment <deployment-name> --replicas=<desired-count>
+✅ Example: Scale to 5 replicas
+👉 kubectl scale deployment my-app --replicas=5
+✅ To verify the scaling:
+👉 kubectl get deployment my-app
+2️⃣ Modify the replicas field in the Deployment YAML file:
 
-💡 Example command to manually scale:
-kubectl scale deployment my-app --replicas=5
-💡 Example HPA configuration:
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: my-app-hpa
+  name: my-app
 spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: my-app
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: 70
+  replicas: 5  ###### Change this value
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: my-app-image:latest
 
-2️⃣ Vertical Scaling (Scaling Up/Down):
-👉 This means increasing or decreasing CPU/RAM for existing pods instead of adding more pods.
-👉 Managed by Vertical Pod Autoscaler (VPA).
-👉 It adjusts resource requests/limits dynamically based on workload needs.
+Apply the changes:
+👉 kubectl apply -f deployment.yaml
 
-💡 Example VPA configuration:
-apiVersion: autoscaling.k8s.io/v1
-kind: VerticalPodAutoscaler
-metadata:
-  name: my-app-vpa
-spec:
-  targetRef:
-    apiVersion: "apps/v1"
-    kind: "Deployment"
-    name: "my-app"
-  updatePolicy:
-    updateMode: "Auto"
+🔹 Vertical Scaling (Increasing CPU & Memory for Pods):-
+1️⃣ Check Current Resource Limits
+👉 kubectl describe deployment <deployment-name>
+2️⃣ Update Resource Requests and Limits Modify the resources section in the Deployment YAML:
+
+containers:
+- name: my-app-container
+  image: my-app-image:latest
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+Apply the changes:
+👉 kubectl apply -f deployment.yaml
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 9. What are ConfigMaps and Secrets in Kubernetes, and how are they used?
@@ -406,9 +483,7 @@ EXPLAIN IN THIS ANSWER:-
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
 🔹 Liveness Probe:
-👉 Purpose: Checks if the application is alive and running.
-👉 If the liveness probe fails, Kubernetes will restart the container, assuming the app is in a broken or unresponsive state.
-👉 Use case: For detecting situations where your app is stuck or deadlocked.
+👉 Liveness Probe checks if the container is still running. If it fails, the container will be restarted.
 
 💡 Example:
 👉 You can set up a liveness probe to check if your app responds on a specific endpoint (like /healthz),
@@ -421,11 +496,7 @@ livenessProbe:
   periodSeconds: 10
 
 🔹 Readiness Probe:
-👉 Purpose: Checks if the application is ready to serve traffic.
-👉 If the readiness probe fails, Kubernetes will stop routing traffic to the pod until it becomes healthy again, 
-   but it won’t restart the container.
-👉 Use case: For detecting if your app is still starting up or temporarily unable to serve requests,
-   (e.g., during a database migration or a heavy load).
+👉 Readiness Probe checks if the container is ready to handle traffic. If it fails, Kubernetes will stop routing traffic to that pod.
 
 💡 Example:
 A readiness probe can be configured to check if the database is ready before allowing the app to accept traffic.
@@ -517,24 +588,176 @@ EXPLAIN IN THIS ANSWER:-
 👉 "For example, the Prometheus Operator automates the deployment and management of
    Prometheus monitoring instances on Kubernetes, handling tasks such as configuration,
    scaling, and self-healing, thereby simplifying the monitoring of Kubernetes clusters."
+
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+22. You have a Kubernetes pod that is stuck in CrashLoopBackOff . How do you diagnose and fix it?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+1. Check pod logs to understand why it’s crashing:
+👉 kubectl logs <pod-name> --previous
+2. Describe the pod to get detailed information about its state and events:
+👉 kubectl describe pod <pod-name>
+3. Look for any error messages or failed container states in the logs. 
+   Common issues include misconfigurations, missing files, or incorrect image versions.
+4. Fix the issue based on the logs (e.g., fix environment variables, update the
+   image, or modify the configuration) and then restart the pod.
 
+   To restart the pod manually:
+👉 kubectl delete pod <pod-name>
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+23. You need to restrict access to a Kubernetes service based on labels. How do you achieve this?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+You can use Network Policies to restrict traffic based on pod labels. 
+A network policy controls the communication between pods based on labels and namespaces.
 
+Example of a NetworkPolicy that allows traffic only to pods with the label role=db in the same namespace:
 
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+   name: allow-db
+spec:
+   podSelector:
+      matchLabels:
+         role: db
+ingress:
+- from:
+   - podSelector:
+       matchLabels:
+         role: app
 
+This policy allows only pods with the role=app label to communicate with pods labeled role=db.
+Apply the network policy:
+👉 kubectl apply -f networkpolicy.yaml
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+24. You want to upgrade a deployment to a new version. How do you perform a rolling update in Kubernetes?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+Kubernetes supports rolling updates by default when you update a Deployment.
+To upgrade to a new version, simply update the deployment’s container image.
 
+1. Update the image version in the deployment YAML:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: my-app
+spec:
+   replicas: 3
+   selector:
+     matchLabels:
+       app: my-app
+   template:
+     metadata:
+      labels:
+        app: my-app
+     spec:
+      containers:
+      - name: my-app
+        image: my-app:v2   ##### New version of the image #####
+        ports:
+        - containerPort: 80
 
+2. Apply the update:
+👉 kubectl apply -f deployment.yaml
+Kubernetes will automatically perform a rolling update by replacing the old pods with the new ones without downtime.
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+25. You want to increase the memory limit of a pod. How do you modify the pod's resource limits?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+To modify the resource limits (CPU/memory) for a pod, you need to update the resource requests and limits in the pod’s YAML definition.
 
+Example modification:
 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  containers:
+  - name: my-container
+    image: nginx
+   resources:
+     requests:
+       memory: "64Mi"
+       cpu: "250m"
+     limits:
+       memory: "128Mi"
+       cpu: "500m"
 
+Apply the updated YAML:
+👉 kubectl apply -f pod.yaml
+To ensure the pod is restarted with the new limits, you can delete the pod or trigger a deployment update.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+26.  You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+In the pod or container spec, you can define resource requests (minimum resources) and limits (maximum resources) for CPU and memory.
+👉 Requests: Kubernetes uses these values to schedule the pod (ensures the pod gets enough resources).
+👉 Limits: Kubernetes enforces these limits (pod will be killed if it exceeds them).
+
+Example YAML:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-limited-pod
+spec:
+  containers:
+    - name: my-container
+      image: nginx
+      resources:
+        requests:
+          memory: "256Mi"   ##### The container is guaranteed at least 256Mi of memory
+          cpu: "250m"       ###### The container is guaranteed at least 0.25 CPU cores
+        limits:
+          memory: "512Mi"   ###### The container cannot use more than 512Mi of memory
+          cpu: "500m"       ##### # The container cannot use more than 0.5 CPU cores
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+27. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
+   Explain the steps you would take to replace the node without affecting the availability of applications running on the cluster?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "To replace an unresponsive Kubernetes node without downtime, I first drain the node to safely evict running pods. 
+    Then, I delete the node from the cluster and provision a new node. 
+    If using a cloud provider, Auto Scaling Groups can handle this automatically. 
+    Finally, I add the new node back to the cluster and verify that workloads are running correctly. 
+    This ensures high availability of applications without disruption."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+28.  A Kubernetes pod is stuck in a "Pending" state. What could be the possible reasons, and how would you troubleshoot it?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "If a Kubernetes pod is stuck in 'Pending', I start by describing the pod to check events. 
+    The most common issues are insufficient node resources, scheduling constraints, storage issues, or networking problems. 
+    I check for resource limits, taints, node affinity rules, and persistent volume claims. 
+    If it's an image pull issue, I verify registry access. 
+    Based on the findings, I take appropriate actions to resolve the issue and ensure the pod gets scheduled."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+29.  You have a Kubernetes Deployment with multiple replicas, and some pods arefailing health checks. 
+     How would you identify the root cause and fix it?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "If some Kubernetes pods are failing health checks, I start by describing the pod to check liveness and readiness probe failures. 
+    Then, I review container logs for errors, manually test the health check endpoints, and verify resource limits. 
+    If needed, I adjust the probe timing, ensure dependent services are available, and check for node issues. 
+    This structured approach helps quickly identify and fix the root cause."
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
