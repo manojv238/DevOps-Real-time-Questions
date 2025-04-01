@@ -1,8 +1,49 @@
-1. "Transition from Monolithic to Microservices" 
-   Consider a company build some kind of monolithic architecture that handles a lot of products okay,
-   now company is expanding and today industry is scalling so companies is expanding and then,
-   monolithic architecture started causing problems so how do you think the company should shift it from
-   monolithic to microservices and how to do deploy their containers and how can they implement kubernetes in it?
+In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. How do you think the company should shift it from Monolithic to Microservices?
+
+2. Can you explain the Overview of Kubernetes Architecture?
+
+3. Difference between Kubernetes and Docker Swarm for container orchestration?
+
+4. What methods are available to expose Kubernetes services to external users, and how do they differ?
+
+5. How would you deploy an application in Kubernetes to ensure zero downtime during updates?
+
+6. Can you explain the difference between stateful and stateless applications, and how each is managed in Kubernetes?
+
+7. How do you handle persistent data in Kubernetes, and what are Persistent Volumes (PVs) and Persistent Volume Claims (PVCs)?
+
+8. Describe the process of scaling applications in Kubernetes both horizontally and vertically?
+
+9. What are ConfigMaps and Secrets in Kubernetes, and how are they used?
+
+10. How can you perform a rollback of a failed deployment in Kubernetes?
+
+11. What tools and practices would you use to monitor a Kubernetes cluster and collect logs?
+
+12. How do you implement security measures within a Kubernetes cluster?
+
+13. Explain Kubernetes RBAC?
+
+14. What is a Helm Chart, and how does it facilitate application deployment in Kubernetes?
+
+15. How does Kubernetes use custom namespaces to organize cluster resources?
+
+16. What are liveness and readiness probes in Kubernetes, and how are they used?
+
+17. What is a Kubernetes network policy, and how does it work?
+
+18. What is the difference between a Kubernetes Deployment and a DaemonSet?
+
+19. How does ingress help in Kubernetes?
+
+20. What is a Kubernetes Custom Resource Definition (CRD), and how can it be used to extend Kubernetes functionality?
+
+21. What is the purpose of Operators?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. How do you think the company should shift it from Monolithic to Microservices? 
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -15,7 +56,7 @@ EXPLAIN IN THIS ANSWER:-
    Each service can be deployed, scaled, and updated separately, making it more flexible and better fault isolation.
 ------------------------------------------------------------------------------------------------------------------------------------------
 
-2. "Can you explain the Overview of Kubernetes Architecture"
+2. Can you explain the Overview of Kubernetes Architecture?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -43,7 +84,7 @@ And comes into WokerNode inside there are two components..,
               ---> So this the basic k8s architeture.
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-3. "Comparison between Kubernetes and Docker Swarm for container orchestration".
+3. Difference between Kubernetes and Docker Swarm for container orchestration?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -329,7 +370,7 @@ EXPLAIN IN THIS ANSWER:-
 
 🔹 "These measures provide a solid foundation for securing Kubernetes clusters."
 -----------------------------------------------------------------------------------------------------------------------------------------
-13. Explain Kubernetes RBAC.
+13. Explain Kubernetes RBAC?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
