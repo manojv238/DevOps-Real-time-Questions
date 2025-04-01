@@ -197,7 +197,94 @@ spec:
     updateMode: "Auto"
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-9. 
+9. What are ConfigMaps and Secrets in Kubernetes, and how are they used?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+"In Kubernetes, ConfigMaps and Secrets are used to store configuration data separately from application code, 
+ making applications more flexible and secure."
+
+🔹 ConfigMaps (For Non-Sensitive Data):
+👉 Stores non-sensitive configuration data such as environment variables, config files, or command-line arguments.
+👉 Helps keep applications configurable without changing container images.
+👉 Example use case: Storing database connection URLs, API keys (if not sensitive), or log levels.
+
+💡 Example ConfigMap YAML:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  database_url: "mysql://db-service:3306"
+  log_level: "debug"
+
+💡 Using a ConfigMap in a Pod:
+env:
+  - name: DATABASE_URL
+    valueFrom:
+      configMapKeyRef:
+        name: my-config
+        key: database_url
+
+🔹 Secrets (For Sensitive Data)
+👉 Stores confidential data like passwords, API keys, TLS certificates.
+👉 Data is base64-encoded (not encrypted, so use RBAC to protect it).
+👉 Example use case: Storing database passwords, authentication tokens, or SSH keys.
+
+💡 Example Secret YAML:
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+data:
+  db_password: cGFzc3dvcmQ=   # (base64 encoded "password")
+
+💡 Using a Secret in a Pod:
+env:
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: my-secret
+        key: db_password
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+10. How can you perform a rollback of a failed deployment in Kubernetes?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+"In Kubernetes, if a deployment update fails, we can easily roll back to a previous stable version using kubectl rollout undo."
+
+🔹 Steps to Perform a Rollback
+1️⃣ Check the Deployment History
+👉 kubectl rollout history deployment <deployment-name>
+💡 This shows the revision history of the deployment.
+
+2️⃣ Rollback to the Previous Version
+👉 kubectl rollout undo deployment <deployment-name>
+💡 This reverts the deployment to the last working state.
+
+3️⃣ Rollback to a Specific Revision (if needed)
+👉 kubectl rollout undo deployment <deployment-name> --to-revision=2
+💡 This allows you to roll back to a specific version from the history.
+
+4️⃣ Check the Status After Rollback
+👉 kubectl get pods
+👉 kubectl describe deployment <deployment-name>
+💡 Ensure the rollback was successful and pods are running correctly.
+
+🔹 Example Use Case:-
+"Imagine you deployed a new version of an application, but it caused downtime. 
+ Instead of debugging immediately, you quickly roll back to the previous working version to restore service, 
+ then troubleshoot the issue separately."
+" It helps maintain high availability and quick recovery from failures."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 
