@@ -77,7 +77,11 @@ There are four main types of services:
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ "To ensure zero downtime while updating an application in Kubernetes,
-   I would use a Rolling Update strategy with Deployments". Here’s how it works and steps to explain:
+   I would use a "Rolling Update strategy" with Deployments". Here’s how it works and steps to explain:
+
+🔹 "Can you explain the process of a Rolling Update Strategy"
+👉 "A rolling update allows Kubernetes to update applications without downtime by gradually replacing old pods with new ones. 
+    It ensures minimal disruption to users and can automatically roll back if the update fails."
 
 1️⃣ Define a Deployment with a specified replica count to ensure multiple pods are running.
 2️⃣ Use RollingUpdate strategy (default for Deployments) to gradually replace old pods with new ones.
@@ -280,6 +284,199 @@ EXPLAIN IN THIS ANSWER:-
 " It helps maintain high availability and quick recovery from failures."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+11. What tools and practices would you use to monitor a Kubernetes cluster and collect logs?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+🔹 Monitoring Tools & Practices
+✅ Prometheus + Grafana (Most Common)
+👉 Prometheus: Collects metrics from Kubernetes (CPU, memory, network, etc.).
+👉 Grafana: Visualizes the metrics with dashboards.
+👉 How it works? Prometheus scrapes metrics from Kubernetes components and Grafana displays them.
+
+💡 Command to check resource usage:
+kubectl top pod
+kubectl top node
+
+🔹 Logging Tools & Practices
+✅ Fluentd + Elasticsearch + Kibana (EFK Stack)
+👉 Fluentd: Collects logs from Kubernetes pods.
+👉 Elasticsearch: Stores and indexes logs.
+👉 Kibana: Provides a UI to search and analyze logs.
+
+💡 Check logs of a pod:
+kubectl logs <pod-name>
+💡 Check logs of a pod running multiple containers:
+kubectl logs <pod-name> -c <container-name>
+💡 Stream logs in real-time:
+kubectl logs -f <pod-name>
+
+🔹 "For monitoring, we use Prometheus & Grafana, and for logging, we use the EFK or Loki stack. 
+These tools help track cluster health, troubleshoot issues, and ensure smooth operations in Kubernetes."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+12. How do you implement security measures within a Kubernetes cluster?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+1️⃣ RBAC (Role-Based Access Control) – Restricts user and service access based on roles.
+2️⃣ Network Policies – Controls pod-to-pod and external communication, preventing unauthorized access within the cluster.
+3️⃣ Container Security – Ensures containers are running securely by using image scanning tools (like Trivy).
+4️⃣ Secrets Management – Stores sensitive data (like API keys and passwords), securely using Kubernetes Secrets 
+   instead of plain text environment variables.
+5️⃣ Audit Logging – Tracks all Kubernetes API activities, helping detect and respond to security incidents.
+6️⃣ Update & Patching – Regularly updating Kubernetes components, nodes, and dependencies to prevent vulnerabilities.
+
+🔹 "These measures provide a solid foundation for securing Kubernetes clusters."
+-----------------------------------------------------------------------------------------------------------------------------------------
+13. Explain Kubernetes RBAC.
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 RBAC (Role-Based Access Control) in Kubernetes restricts access to resources based onuser roles.
+   You define Roles with specific permissions (e.g., create, delete) and bind them to users or groups using RoleBindings.
+   RBAC ensures users and applications have access only to necessary resources, 
+   following the principle of least privilege and enhancing security.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+14. What is a Helm Chart, and how does it facilitate application deployment in Kubernetes?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Helm Chart is a package that contains all the Kubernetes resources needed to deploy an application, 
+   such as Deployments, Services, and ConfigMaps. 
+   It simplifies the process by allowing you to deploy an entire application with a single command. 
+   Helm charts can be customized with a values.yaml file, like replicas, resource limits, etc,,.
+   and they support versioning, making it easy to manage updates and rollbacks of applications in Kubernetes."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+15. How does Kubernetes use custom namespaces to organize cluster resources?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "In Kubernetes, namespaces are used to organize and isolate resources within a cluster. 
+   They provide a way to divide cluster resources into different environments, teams, or applications 
+   This makes it easier to manage and maintain your resources within the cluster,
+   and also provides better security and resource isolation, while ensuring they don’t interfere with each other."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+16. What are liveness and readiness probes in Kubernetes, and how are they used?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+🔹 Liveness Probe:
+👉 Purpose: Checks if the application is alive and running.
+👉 If the liveness probe fails, Kubernetes will restart the container, assuming the app is in a broken or unresponsive state.
+👉 Use case: For detecting situations where your app is stuck or deadlocked.
+
+💡 Example:
+👉 You can set up a liveness probe to check if your app responds on a specific endpoint (like /healthz),
+   if the app doesn’t respond correctly, Kubernetes will restart it.
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+🔹 Readiness Probe:
+👉 Purpose: Checks if the application is ready to serve traffic.
+👉 If the readiness probe fails, Kubernetes will stop routing traffic to the pod until it becomes healthy again, 
+   but it won’t restart the container.
+👉 Use case: For detecting if your app is still starting up or temporarily unable to serve requests,
+   (e.g., during a database migration or a heavy load).
+
+💡 Example:
+A readiness probe can be configured to check if the database is ready before allowing the app to accept traffic.
+readinessProbe:
+  httpGet:
+    path: /readiness
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 15
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+17. What is a Kubernetes network policy, and how does it work?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Kubernetes Network Policy is a way to control the communication between pods, services, and external resources.
+   It defines which pods can communicate with each other and which cannot, based on a set of rules."
+
+🔹 Key Concepts
+1️⃣ Default Behavior (Before Network Policies)
+👉 By default, Kubernetes allows all pod-to-pod communication within a cluster.
+👉 No restrictions unless you explicitly configure them.
+
+2️⃣ Purpose of Network Policies
+👉 To restrict traffic to specific pods or services.
+👉 Enhance security by controlling which pods can talk to each other.
+
+3️⃣ How It Works
+👉 A network policy defines a set of rules that allow or deny traffic to/from pods based on labels, namespaces, ports, and IP blocks.
+👉 If a policy is applied, it restricts traffic to only what is allowed by the policy and blocks anything not explicitly allowed.
+
+4️⃣ Network Policy Selector
+👉 PodSelector: Selects the pods that are affected by the policy (e.g., all pods with label app: frontend).
+👉 Ingress and Egress Rules: Controls incoming and outgoing traffic.
+
+🔹 Types of Network Policies:-
+👉 Ingress Policies: Controls incoming traffic to a pod.
+👉 Egress Policies: Controls outgoing traffic from a pod.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+18. What is the difference between a Kubernetes Deployment and a DaemonSet?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+🔹 Kubernetes Deployment:
+👉 Purpose: Manages a replicated application that needs to run in multiple pods for scalability and high availability.
+👉 Behavior: Ensures that a specified number of replicas of a pod are running at any given time. 
+   It provides automated rollouts, scaling, and rollback capabilities.
+👉 Ideal for stateless applications where you want multiple copies of your app running for high availability.
+
+🔹 Kubernetes DaemonSet
+👉 Purpose: Ensures that a copy of a pod is running on every node (or a subset of nodes) in the cluster.
+👉 Behavior: Automatically creates a pod on each node in the cluster, ensuring that a single instance of the pod runs on each node.
+👉 No scaling involved — there will always be one pod per node.
+
+👉 "A Kubernetes Deployment ensures a specified number of replicas of a pod are running, ideal for stateless applications." 
+👉 "A DaemonSet ensures that a pod runs on every node in the cluster, making it ideal for system-level tasks like monitoring or logging."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+19. How does ingress help in Kubernetes?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Ingress in Kubernetes is used to manage external access to the services inside the cluster, typically HTTP/S traffic. 
+   It provides features like load balancing, SSL termination, and path-based or host-based routing. 
+   Ingress helps simplify service exposure by providing a single entry point and managing traffic routing efficiently, 
+   improving scalability and security in your cluster."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+20. What is a Kubernetes Custom Resource Definition (CRD), and how can it be used to extend Kubernetes functionality?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Kubernetes Custom Resource Definition (CRD) allows you to define custom resources in your cluster, 
+   extending Kubernetes with new resource types. 
+   CRDs are commonly used with controllers or operators to automate complex tasks and manage application-specific resources.
+   This gives you the flexibility to build Kubernetes-native solutions for your needs, 
+   while maintaining the benefits of Kubernetes' declarative configuration and scalability."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+21. What is the purpose of Operators?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Kubernetes operator is a method of packaging, deploying, and managing a Kubernetes application.
+   An operator uses the Kubernetes API to automate tasks such as deployment,
+   scaling, implementing custom controllers, enabling self-healing systems, and supporting declarative management practices."
+
+👉 "For example, the Prometheus Operator automates the deployment and management of
+   Prometheus monitoring instances on Kubernetes, handling tasks such as configuration,
+   scaling, and self-healing, thereby simplifying the monitoring of Kubernetes clusters."
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
