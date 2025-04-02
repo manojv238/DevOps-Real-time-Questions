@@ -48,16 +48,15 @@ In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
 
 24. You want to upgrade a deployment to a new version. How do you perform a rolling update in Kubernetes?
 
-25. You want to increase the memory limit of a pod. How do you modify the pod's resource limits?
 
-26.  You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
+25.  You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
 
-27. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
+26. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
     Explain the steps you would take to replace the node without affecting the availability of applications running on the cluster?
 
-28.  A Kubernetes pod is stuck in a "Pending" state. What could be the possible reasons, and how would you troubleshoot it?
+27.  A Kubernetes pod is stuck in a "Pending" state. What could be the possible reasons, and how would you troubleshoot it?
 
-29.  You have a Kubernetes Deployment with multiple replicas, and some pods arefailing health checks. 
+28.  You have a Kubernetes Deployment with multiple replicas, and some pods arefailing health checks. 
      How would you identify the root cause and fix it?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
