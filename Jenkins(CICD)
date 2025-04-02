@@ -4,14 +4,117 @@ In DevOps, Jenkins(CI/CD) in Realtime Senario Interview Questions and Answers:
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-┌───────────────────────────┬───────────────────────────────────────────────┬──────────────────────────────┬──────────────────┐
-│        Concept            │               What It Does                    │    Automation Level          │ Manual Approval? │
-├───────────────────────────┼───────────────────────────────────────────────┼──────────────────────────────┼──────────────────┤
-│ Continuous Integration    │ Merges and tests code automatically.          │ 🟢 Code + Tests Only         │ ❌ No           │
-│ (CI)                      │                                               │                              │                  │
-├───────────────────────────┼───────────────────────────────────────────────┼──────────────────────────────┼──────────────────┤
-│ Continuous Delivery (CD)  │ Deploys to staging, requires manual approval. │ 🟢 Code + Tests + Staging    │ ✅ Yes          │
-├───────────────────────────┼───────────────────────────────────────────────┼──────────────────────────────┼──────────────────┤
-│ Continuous Deployment (CD)│ Fully automated deployment to production.     │ 🟢 Fully Automated           │ ❌ No           │
-└───────────────────────────┴───────────────────────────────────────────────┴──────────────────────────────┴──────────────────┘
+CICD Stands for Continuos Integration(CI) & Continuos Delivery/Deployment(CD).
+🔹 Continuous Integration (CI):
+👉 Developers frequently push code changes (e.g., a new discount feature).
+👉 A CI pipline (Jenkins, GitHub Actions, GitLab CI/CD) automatically builds the code, runs tests, and performs security scans.
+👉 If everything passes, the code is merged into the main branch.
+
+🔹 Continuous Delivery (CD):
+👉 The application is automatically deployed to a staging environment for manual review.
+👉 Once approved, it's ready for production deployment.
+
+🔹 Continuous Deployment (CD):
+👉 If fully automated, the changes go directly to production after passing tests.
+👉 Using blue-green or canary deployments, the update is rolled out with zero downtime.
+👉 If an issue is found, an auto-rollback mechanism restores the previous version.
 -----------------------------------------------------------------------------------------------------------------------------------------
+
+2. What CI/CD tool have you worked with, which one do you prefer?​
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+🔹 Jenkins is an open-source automation server used to implement CI/CD pipelines in DevOps. 
+  It automates building, testing, and deploying applications, making software delivery faster and more reliable.
+
+🔥 I Preferred Jenkins (For On-Prem & Hybrid Cloud CI/CD):
+👉 Highly customizable and integrates well with on-prem infrastructure.
+👉 Supports pipeline as code (Jenkinsfile), making it easy to automate builds.
+👉 Works well with Maven, SonarQube, Trivy, Docker, Kubernetes, and AWS EKS.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+3. Difference Between Declarative & Scripted Pipelines in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Declarative Pipelines are structured, easy to maintain, and recommended for most CI/CD workflows. 
+👉 Scripted Pipelines offer more flexibility but require deeper Groovy knowledge. 
+✅ I prefer Declarative Pipelines for readability, but I use Scripted Pipelines when I need advanced logic and dynamic behavior.
+
+1️⃣ Scripted Pipeline (Groovy-Based, Code-Driven Pipeline)
+👉 Written in Groovy inside a Jenkinsfile.
+👉 Provides full control over pipeline logic.
+👉 Supports complex logic, loops, and conditional execution.
+💡 Example Scripted Pipeline:
+node {
+    stage('Build') {
+        sh 'mvn clean package'
+    }
+    stage('Test') {
+        sh 'mvn test'
+    }
+    stage('Deploy') {
+        sh 'kubectl apply -f deployment.yaml'
+    }
+}
+
+2️⃣ Declarative Pipeline (YAML-Style, Structured Pipeline)
+👉 A structured, readable pipeline syntax using pipeline {} blocks.
+👉 Easier to maintain than scripted pipelines.
+👉 Recommended for most CI/CD use cases.
+💡 Example Declarative Pipeline:
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+            }
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+4.  What is "Pipeline as Code" in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Pipeline as Code means defining Jenkins pipelines using 
+  a version-controlled Jenkinsfile instead of manually configuring jobs in the UI.
+  This approach ensures automation, consistency, and collaboration in CI/CD workflows." 
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+5. What is a Jenkinsfile & How is it Used?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Jenkinsfile is a version-controlled script that defines a Jenkins pipeline in code. 
+  It allows CI/CD automation by defining build, test, and deployment stages inside a Git repository."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
