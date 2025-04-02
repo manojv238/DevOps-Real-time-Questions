@@ -48,7 +48,6 @@ In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
 
 24. You want to upgrade a deployment to a new version. How do you perform a rolling update in Kubernetes?
 
-
 25.  You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
 
 26. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
@@ -58,6 +57,8 @@ In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
 
 28.  You have a Kubernetes Deployment with multiple replicas, and some pods arefailing health checks. 
      How would you identify the root cause and fix it?
+
+29. "What are init containers? How are they used? What is a common pattern you could use them for?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. How do you think the company should shift it from Monolithic to Microservices? 
@@ -962,6 +963,42 @@ EXPLAIN IN THIS ANSWER:-
 🔹 Or restart the Deployment:
 👉 kubectl rollout restart deployment <deployment-name>
 -----------------------------------------------------------------------------------------------------------------------------------------
+
+29. "What are init containers? How are they used? What is a common pattern you could use them for?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+📌 Init Containers in Kubernetes:
+🔹 Init containers are specialized containers that run before the main application containers start in a pod.
+🔹 They are used for initialization tasks such as setting up configurations, checking dependencies, or preparing the environment.
+🔹 Unlike regular containers, init containers always run to completion first, and only then do the main containers start.
+
+📌 How Are Init Containers Used:
+✅ They are defined in the PodSpec under initContainers along with the main containers.
+✅ Each init container must complete successfully before the next one starts.
+👉 Example YAML Configuration:
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-app
+spec:
+  initContainers:
+  - name: init-db
+    image: busybox
+    command: ["sh", "-c", "until nc -z db-service 3306; do echo waiting for database; sleep 2; done"]
+  containers:
+  - name: app
+    image: my-app-image
+    ports:
+    - containerPort: 8080
+
+🔹 In this example, the init container init-db:
+👉 Waits until the database service (db-service:3306) is reachable before starting the main application.
+
+
+
+
 
 
 
