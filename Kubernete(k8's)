@@ -123,11 +123,12 @@ EXPLAIN IN THIS ANSWER:-
 👉 Pods are temporary and (they can be created and destroyed frequently), 
     So we can use Services thats provide a stable way to communicate between applications.
 
-1. ClusterIP is default internal cluster,
-2. NodePort is simple but limited, 
-3. LoadBalancer is best for cloud environments, and 
-4. Ingress provides advanced routing with a single entry point. 
-"For production, I prefer using Ingress with an Ingress Controller for better security, TLS termination, and traffic management."
+1. ClusterIP can Exposes a service within the cluster with a stable internal IP address,
+2. NodePort can Exposes a service on a static port on each Node in the Cluster, 
+3. LoadBalancer Exposes a service externally with a public IP, Uses a cloud load balancer"(AWS)", and 
+4. Ingress provides a Manages external access using HTTP/HTTPS routes with path-based routing.
+
+👉 "For production, I prefer using Ingress with an Ingress Controller for better security, TLS termination, and traffic management."
 
 SENARIO EXPLANATION ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -507,9 +508,9 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 "For monitoring Kubernetes, I use Prometheus & Grafana to track CPU, memory, and pod health.
+👉 "For monitoring Kubernetes, I use Prometheus & Grafana to track CPU, memory, and pod health checks and etc,,.
      For logging, I use ELK (Elasticsearch, Logstash, Kibana) to collect and analyze logs.
-     I also set up alerts and structured logging for proactive issue detection. 
+     I also set up Kube-State-Metrics for cluster insights and Node Exporter for node-level monitoring. 
      This helps ensure cluster stability and quick troubleshooting."
 
 🔹 Monitoring Tools & Practices
@@ -541,12 +542,12 @@ kubectl logs -f <pod-name>
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
 1️⃣ RBAC (Role-Based Access Control) – Restricts user and service access based on roles.
-2️⃣ Network Policies – Controls pod-to-pod and external communication, preventing unauthorized access within the cluster.
+2️⃣ Network Policies   – Controls pod-to-pod and external communication, preventing unauthorized access within the cluster.
 3️⃣ Container Security – Ensures containers are running securely by using image scanning tools (like Trivy).
 4️⃣ Secrets Management – Stores sensitive data (like API keys and passwords), securely using Kubernetes Secrets 
-   instead of plain text environment variables.
-5️⃣ Audit Logging – Tracks all Kubernetes API activities, helping detect and respond to security incidents.
-6️⃣ Update & Patching – Regularly updating Kubernetes components, nodes, and dependencies to prevent vulnerabilities.
+                        instead of plain text environment variables.
+5️⃣ Audit Logging      – Tracks all Kubernetes API activities, helping detect and respond to security incidents.
+6️⃣ Update & Patching  – Regularly updating Kubernetes components, nodes, and dependencies to prevent vulnerabilities.
 
 🔹 "These measures provide a solid foundation for securing Kubernetes clusters."
 -----------------------------------------------------------------------------------------------------------------------------------------
@@ -554,11 +555,11 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 "RBAC (Role-Based Access Control) in Kubernetes restricts access to resources based onuser roles.
+👉 "RBAC (Role-Based Access Control) in Kubernetes restricts access to resources based on user roles.
     You define Roles with specific permissions (e.g., create, delete) and bind them to users or groups using RoleBindings.
 
 👉  RBAC ensures users and applications have access only to necessary resources, 
-    following the principle of least privilege and enhancing security."
+     following the principle of least privilege and enhancing security."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 14. What is a Helm Chart, and how does it facilitate application deployment in Kubernetes?
@@ -676,10 +677,14 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 "Ingress in Kubernetes is used to manage external access to the services inside the cluster, typically HTTP/S traffic. 
+👉 "Ingress in Kubernetes is used to manage external access to the services inside the cluster, typically HTTP/HTTPS traffic. 
    It provides features like load balancing, SSL termination, and path-based or host-based routing. 
    Ingress helps simplify service exposure by providing a single entry point and managing traffic routing efficiently, 
    improving scalability and security in your cluster."
+
+🔹 Example Use Case:
+👉 "A company hosting multiple microservices (app.example.com, api.example.com) can use Ingress to expose them 
+    a single Ingress Controller instead of creating separate Load Balancers, reducing costs and improving security."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 20. What is a Kubernetes Custom Resource Definition (CRD), and how can it be used to extend Kubernetes functionality?
@@ -691,6 +696,10 @@ EXPLAIN IN THIS ANSWER:-
    CRDs are commonly used with controllers or operators to automate complex tasks and manage application-specific resources.
    This gives you the flexibility to build Kubernetes-native solutions for your needs, 
    while maintaining the benefits of Kubernetes' declarative configuration and scalability."
+
+🔹 Example Use Case:
+👉 "A company using Kafka in Kubernetes can define a KafkaCluster CRD, 
+     It allowing teams to deploy and manage Kafka clusters just like native Kubernetes resources, simplifying operations."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 21. What is the purpose of Operators?
@@ -701,26 +710,44 @@ EXPLAIN IN THIS ANSWER:-
    An operator uses the Kubernetes API to automate tasks such as deployment,
    scaling, implementing custom controllers, enabling self-healing systems, and supporting declarative management practices."
 
-👉 "For example, the Prometheus Operator automates the deployment and management of
-   Prometheus monitoring instances on Kubernetes, handling tasks such as configuration,
-   scaling, and self-healing, thereby simplifying the monitoring of Kubernetes clusters."
+🔹 Example Use Case:
+👉 "Prometheus Operator automates the deployment and management of Prometheus monitoring instances on Kubernetes, 
+    handling tasks such as configuration, scaling, and self-healing, thereby simplifying the monitoring of Kubernetes clusters."
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-22. You have a Kubernetes pod that is stuck in CrashLoopBackOff . How do you diagnose and fix it?
+22. You have a Kubernetes pod that is stuck in CrashLoopBackOff. How do you diagnose and fix it?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A CrashLoopBackOff in Kubernetes means that a pod is repeatedly crashing and restarting due to an error. 
+    I follow a structured approach to diagnose and resolve the issue."
+
 1. Check pod logs to understand why it’s crashing:
 👉 kubectl logs <pod-name> --previous
+🔹 Example:
+👉 The --previous flag retrieves logs from the previous instance of the container before it restarted.
+👉 This helps identify application errors, missing dependencies, or misconfigurations that caused the crash.
+
 2. Describe the pod to get detailed information about its state and events:
 👉 kubectl describe pod <pod-name>
-3. Look for any error messages or failed container states in the logs. 
-   Common issues include misconfigurations, missing files, or incorrect image versions.
-4. Fix the issue based on the logs (e.g., fix environment variables, update the
-   image, or modify the configuration) and then restart the pod.
+🔹 Example:
+👉 This command provides detailed insights about the pod, including:
+👉 Recent events (e.g., failed liveness probes, OOMKilled errors).
+👉 Container status (e.g., CrashLoopBackOff, ImagePullBackOff).
+👉 Reason for failure (e.g., health check failures, permission issues).
 
-   To restart the pod manually:
+3. After checking logs and kubectl describe, common issues could be:
+✅ Misconfigurations (e.g., wrong port, missing environment variables).
+✅ Missing Files/Dependencies (e.g., required config files not mounted).
+✅ Incorrect Image Versions (e.g., using an incompatible or broken Docker image).
+✅ Resource Limits Exceeded (e.g., pod getting OOMKilled due to memory shortage).
+
+4. Fix the issue based on the logs and events:
+✅ If an environment variable is missing: Update the deployment YAML.
+✅ If the wrong image is used: Update the correct image and redeploy.
+
+5. To restart the pod manually after applying fixes:
 👉 kubectl delete pod <pod-name>
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -728,120 +755,112 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-You can use Network Policies to restrict traffic based on pod labels. 
-A network policy controls the communication between pods based on labels and namespaces.
+👉 "To restrict access to a Kubernetes service based on labels, I use NetworkPolicies to control traffic at the pod level."
 
-Example of a NetworkPolicy that allows traffic only to pods with the label role=db in the same namespace:
+1️⃣ Use a NetworkPolicy to Restrict Access:
+👉 A NetworkPolicy defines rules that allow or deny traffic between pods based on labels.
+🔹 Example Scenario:
+👉 Service A should only be accessed by Pods with label app=frontend.
+👉 Other pods in the cluster should not reach Service A.
 
+2️⃣ Define the NetworkPolicy (YAML Example):
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-   name: allow-db
+  name: restrict-access
+  namespace: default
 spec:
-   podSelector:
-      matchLabels:
-         role: db
-ingress:
-- from:
-   - podSelector:
-       matchLabels:
-         role: app
+  podSelector:
+    matchLabels:
+      app: service-a  --------> Targeting the pods running Service A
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend  --------> Only allow traffic from frontend pods
+      ports:
+        - protocol: TCP
+          port: 80  --------> Define the service port
 
-This policy allows only pods with the role=app label to communicate with pods labeled role=db.
-Apply the network policy:
-👉 kubectl apply -f networkpolicy.yaml
+3️⃣ How It Works?
+✅ The podSelector selects pods running Service A (label: app=service-a).
+✅ The ingress rule allows access only from pods with app=frontend.
+✅ Other pods cannot access Service A, effectively restricting access based on labels.
+
+4. Apply the network policy:
+👉 kubectl apply -f <networkpolicy.yaml>
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 24. You want to upgrade a deployment to a new version. How do you perform a rolling update in Kubernetes?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-Kubernetes supports rolling updates by default when you update a Deployment.
-To upgrade to a new version, simply update the deployment’s container image.
+👉 "In Kubernetes, a rolling update ensures zero downtime by gradually replacing old pods with new ones."
 
-1. Update the image version in the deployment YAML:
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-   name: my-app
-spec:
-   replicas: 3
-   selector:
-     matchLabels:
-       app: my-app
-   template:
-     metadata:
-      labels:
-        app: my-app
-     spec:
-      containers:
-      - name: my-app
-        image: my-app:v2   ##### New version of the image #####
-        ports:
-        - containerPort: 80
+1️⃣ Update the Deployment with the New Version:
+🔹 Modify the container image in the deployment and apply the changes:
+👉 kubectl set image deployment/<deployment-name> <container-name>=<new-image>:<tag>
+🔹 Example: Updating nginx deployment to version 1.21:
+👉 kubectl set image deployment/nginx-deployment nginx=nginx:1.21
 
-2. Apply the update:
-👉 kubectl apply -f deployment.yaml
-Kubernetes will automatically perform a rolling update by replacing the old pods with the new ones without downtime.
+2️⃣ Verify the Rolling Update Progress:
+🔹 Monitor the update to ensure new pods are replacing old ones gradually:
+👉 kubectl rollout status deployment/<deployment-name>
+
+👉 Kubernetes will automatically perform a rolling update by replacing the old pods with the new ones without downtime.
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-25. You want to increase the memory limit of a pod. How do you modify the pod's resource limits?
+25. You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-To modify the resource limits (CPU/memory) for a pod, you need to update the resource requests and limits in the pod’s YAML definition.
-
-Example modification:
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-pod
-spec:
-  containers:
-  - name: my-container
-    image: nginx
-   resources:
-     requests:
-       memory: "64Mi"
-       cpu: "250m"
-     limits:
-       memory: "128Mi"
-       cpu: "500m"
-
-Apply the updated YAML:
-👉 kubectl apply -f pod.yaml
-To ensure the pod is restarted with the new limits, you can delete the pod or trigger a deployment update.
------------------------------------------------------------------------------------------------------------------------------------------
-
-26.  You want to limit the CPU and memory usage for a container. How do you set resource requests and limits?
-
-EXPLAIN IN THIS ANSWER:-
-━━━━━━━━━━━━━━━━━━━━━━━━
-In the pod or container spec, you can define resource requests (minimum resources) and limits (maximum resources) for CPU and memory.
+👉 "To control resource usage in Kubernetes, I set CPU and memory requests and limits in the pod’s deployment YAML and apply the changes."
 👉 Requests: Kubernetes uses these values to schedule the pod (ensures the pod gets enough resources).
 👉 Limits: Kubernetes enforces these limits (pod will be killed if it exceeds them).
 
-Example YAML:
-
-apiVersion: v1
-kind: Pod
+1️⃣ Define Resource Requests and Limits in YAML:
+🔹 Modify the resources section inside the pod or deployment YAML file.
+🔹 Example: Increase memory limit to 1Gi (512Mi) and CPU 500m (250m):
+---
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: resource-limited-pod
+  name: my-app
 spec:
-  containers:
-    - name: my-container
-      image: nginx
-      resources:
-        requests:
-          memory: "256Mi"   ##### The container is guaranteed at least 256Mi of memory
-          cpu: "250m"       ###### The container is guaranteed at least 0.25 CPU cores
-        limits:
-          memory: "512Mi"   ###### The container cannot use more than 512Mi of memory
-          cpu: "500m"       ##### # The container cannot use more than 0.5 CPU cores
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-container
+          image: my-app:latest
+          resources:
+            requests:
+              memory: "512Mi"  --------> Minimum memory requested
+              cpu: "250m"      --------> Minimum guaranteed CPU (0.25 cores)
+            limits:
+              memory: "1Gi"    --------> Maximum memory limit (previously lower)
+              cpu: "500m"      --------> Max CPU (0.5 cores)
+
+2️⃣ Apply the Changes:
+👉 kubectl apply -f pod.yaml
+
+or, if modifying an existing deployment:
+👉 kubectl set resources deployment my-app --limits=cpu=500m,memory=512Mi --requests=cpu=250m,memory=256Mi
+
+3️⃣ Verify the Resource Limits:
+👉 kubectl describe pod <pod-name>
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-27. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
+26. You have a Kubernetes cluster with multiple worker nodes. One of the nodes becomes unresponsive and needs to be replaced. 
    Explain the steps you would take to replace the node without affecting the availability of applications running on the cluster?
 
 EXPLAIN IN THIS ANSWER:-
@@ -853,26 +872,96 @@ EXPLAIN IN THIS ANSWER:-
     This ensures high availability of applications without disruption."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-28. A Kubernetes pod is stuck in a "Pending" state. What could be the possible reasons, and how would you troubleshoot it?
+27. A Kubernetes pod is stuck in a "Pending" state. What could be the possible reasons, and how would you troubleshoot it?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 "If a Kubernetes pod is stuck in 'Pending', I start by describing the pod to check events. 
-    The most common issues are insufficient node resources, scheduling constraints, storage issues, or networking problems. 
-    I check for resource limits, taints, node affinity rules, and persistent volume claims. 
-    If it's an image pull issue, I verify registry access. 
-    Based on the findings, I take appropriate actions to resolve the issue and ensure the pod gets scheduled."
+👉 "When a Kubernetes pod is stuck in a 'Pending' state, it means the pod is unable to be scheduled on any node."
+    I follow a structured troubleshooting approach to identify and resolve the issue.
+
+1️⃣ Check Pod Status:
+👉 kubectl get pods -o wide
+✅ If a pod is stuck in "Pending", it usually means Kubernetes cannot schedule it on a node.
+
+2️⃣ Describe the Pod for More Details:
+👉 kubectl describe pod <pod-name>
+🔹 Look for:
+👉 Events: Section (Scheduling errors, insufficient resources, or taints).
+👉 Conditions: Reasons why the pod is not running.
+
+3️⃣ Check for Resource Constraints:
+👉 kubectl describe node <node-name>
+🔹 Possible issues:
+👉 Nodes have insufficient CPU/memory.
+👉 Limits or requests in resources: section are too high.
+
+4️⃣ Check for Node Selectors & Taints:
+🔹 If a pod has node selectors or tolerations, it may not find a suitable node.
+👉 kubectl describe pod <pod-name>
+👉 kubectl describe node <node-name>
+🔹 Possible issues:
+👉 The pod has a nodeSelector that doesn't match any available node.
+👉 Nodes are tainted, and the pod lacks the required tolerations.
+
+5️⃣ Check if the Scheduler is Working Properly:
+🔹 If the Kubernetes scheduler is not functioning, no new pods will be scheduled.
+👉 kubectl get pods -n kube-system | grep scheduler
+
+6️⃣ Check if Persistent Volume (PV) is Available:
+🔹 If a pod is waiting for a volume to be bound, it remains in "Pending".
+👉 kubectl get pvc
+🔹 Possible issue:
+👉 No available PersistentVolume for the requested claim.
+
+7️⃣ Force Reschedule the Pod:
+🔹 If the issue is still unresolved, delete the pod and let Kubernetes reschedule it.
+👉 kubectl delete pod <pod-name>
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-29.  You have a Kubernetes Deployment with multiple replicas, and some pods arefailing health checks. 
+28.  You have a Kubernetes Deployment with multiple replicas, and some pods are failing health checks. 
      How would you identify the root cause and fix it?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 "If some Kubernetes pods are failing health checks, I start by describing the pod to check liveness and readiness probe failures. 
-    Then, I review container logs for errors, manually test the health check endpoints, and verify resource limits. 
-    If needed, I adjust the probe timing, ensure dependent services are available, and check for node issues. 
-    This structured approach helps quickly identify and fix the root cause."
+👉 "When multiple pods in a Kubernetes Deployment are failing health checks, 
+    it indicates an issue with the application, configuration, or underlying infrastructure."
+     I follow a systematic approach to diagnose and resolve the issue.
+
+1️⃣ Identify Check pod status in the Deployment:
+👉 kubectl get pods -l app=<app-name>
+✅ If some pods show CrashLoopBackOff or Error, proceed with further investigation.
+
+2️⃣ Inspect Pod Logs for Errors to check why the application is failing:
+👉 kubectl logs <pod-name>
+🔹 For multi-container pods:
+👉 kubectl logs <pod-name> -c <container-name>
+🔹 Common issues:
+👉 Application crashes due to misconfiguration or dependency failures.
+👉 Database connection failures or incorrect environment variables.
+
+3️⃣ Describe the Pod for More Details:
+👉 kubectl describe pod <pod-name>
+🔹 Check for:
+👉 Events section: Shows failed liveness/readiness probes.
+👉 Container state: Waiting or Terminated reasons.
+👉 Resource limits: If the pod is being OOMKilled (Out of Memory).
+
+4️⃣ Check liveness and readiness Health Probe Configurations in View Deployment YAML:
+👉 kubectl get deployment <deployment-name> -o yaml
+🔹 Possible probe issues:
+👉 Incorrect path or port in readinessProbe / livenessProbe.
+👉 Probes timing out before the app fully starts.
+
+5️⃣ Check Resource Limits & Node Constraints:
+👉 kubectl describe pod <pod-name>
+🔹 Possible issues:
+👉 Insufficient CPU/memory causing crashes.
+👉 NodeSelector or Taints preventing scheduling.
+
+6️⃣ If the issue is resolved, restart the failing pods:
+👉 kubectl delete pod <pod-name>
+🔹 Or restart the Deployment:
+👉 kubectl rollout restart deployment <deployment-name>
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 
