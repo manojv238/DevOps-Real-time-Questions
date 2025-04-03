@@ -133,22 +133,25 @@ EXPLAIN IN THIS ANSWER:-
 
 6. How does Jenkins manage sensitive information like passwords or API keys within pipelines?
    How do you handle secrets and credentails in jenkins?
+   
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-🔹 1. Using Jenkins Credentials Store
-👉 Jenkins provides a built-in Credentials Store to securely store usernames, passwords, API tokens, SSH keys, and secrets.
-👉 Credentials are encrypted and accessed within pipelines without exposing them in logs.
-🔹 2. Injecting Credentials in a Declarative Pipeline:
+✅ Secure Credentials & Secrets Management
+📌 Key Security Practices:
+✔ Use Jenkins Credentials Store – Store passwords, API keys, and SSH keys securely.
+✔ Integrate with Vault Services – Use HashiCorp Vault, AWS Secrets Manager, or Kubernetes Secrets.
+✔ Restrict Credential Exposure – Use credentials only in Jenkins pipelines and avoid printing them in logs.
+📌 Example: Using Jenkins Credentials in a Pipeline:
 pipeline {
     agent any
     environment {
-        SECRET_API_KEY = credentials('my-api-key-id')  // Retrieves API key securely
+        AWS_SECRET = credentials('aws-secret-key')  // Stored in Jenkins Credentials
     }
     stages {
-        stage('Use Secret') {
+        stage('Deploy') {
             steps {
-                sh 'curl -H "Authorization: Bearer $SECRET_API_KEY" https://api.example.com'
+                sh 'aws s3 sync ./build s3://my-bucket --secret $AWS_SECRET'
             }
         }
     }
@@ -355,8 +358,63 @@ EXPLAIN IN THIS ANSWER:-
 👉 Example (Run every night at 2 AM)
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+15. How can Jenkins be configured to send notifications upon build completion or failure?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Jenkins can be configured to send notifications via email, to inform developers about build success or failure. 
+     This helps teams quickly react to issues and improve CI/CD efficiency."
 
+✅ 1. Email Notifications (Using Mailer Plugin)
+📌 Steps to Configure:
+1️⃣ Install "Mailer" Plugin (if not installed).
+2️⃣ Go to Manage Jenkins → Configure System and set:
+SMTP Server (e.g., smtp.gmail.com for Gmail).
+Credentials for authentication.
+3️⃣ In the job settings, enable "Post-Build Actions → Email Notification" and enter recipients.
+📌 Example in a Jenkinsfile:
+post {
+    success {
+        emailext subject: "Build Success: ${env.JOB_NAME}",
+                 body: "The build was successful!",
+                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    }
+    failure {
+        emailext subject: "Build Failed: ${env.JOB_NAME}",
+                 body: "The build failed. Please check the logs.",
+                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+16. How would you scale Jenkins to handle an increasing number of builds?
+    Can u explain the master-slave architecture in jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+✅ 1. Components of Master-Slave Architecture:
+✔  Jenkins Master (Controller):
+👉 Jenkins UI, job scheduling, and managing build execution.
+👉 Assigns jobs to slaves (agents) based on labels and configurations.
+👉 Stores job configurations, plugins, and logs.
+
+✔  Jenkins Slaves (Agents):
+👉 Executes build jobs assigned by the master.
+👉 Can run on different operating systems (Linux, Windows, Mac).
+👉 May have specific tools or dependencies installed for specialized builds.
+
+✅ 2. How Jenkins Master-Slave Works:
+1️⃣ Master schedules a build job based on triggers (SCM changes, manual, or scheduled).
+2️⃣ Master assigns the job to an appropriate slave based on labels, resources, and availability.
+3️⃣ Slave executes the build using the specified environment (Docker, Maven, Node.js, etc.).
+4️⃣ Results are sent back to the master for logging and reporting.
+
+✔ Parallel execution is possible if multiple slaves are available.
+
+✅ 3. How to Set Up Jenkins Agents:
+1️⃣ Install and configure the "Jenkins SSH Build Agents" plugin.
+2️⃣ Connect remote machines as agents using SSH.
+3️⃣ In job configuration, specify the agent label to execute builds on specific nodes.
 
 
 
