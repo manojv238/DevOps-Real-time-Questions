@@ -70,6 +70,16 @@ EXPLAIN IN THIS ANSWER:-
 👉 "In my DMS project, we used CI/CD pipelines to automate builds, testing, and deployments, 
     CI ensured bug-free code, Continuous Delivery enabled manual approval before production, and 
     Continuous Deployment allowed seamless, automated releases."
+
+📌 CI/CD Pipeline Workflow Summary:-
+1️⃣ Developer pushes code → GitHub
+2️⃣ Jenkins triggers pipeline → Builds, Tests, Scans
+3️⃣ Artifacts stored → Nexus/Artifactory
+4️⃣ Containerization → Docker, Image stored in ECR/Docker Hub
+5️⃣ Infrastructure provisioned → Terraform, Ansible
+6️⃣ Deployment to Kubernetes → Helm Charts, K8's
+7️⃣ Security & Compliance Checks → SonarQube, Trivy
+8️⃣ Monitoring & Logging Setup → Prometheus, Grafana, ELK.
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 2. What CI/CD tool have you worked with, which one do you prefer?​
