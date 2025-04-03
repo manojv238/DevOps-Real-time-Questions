@@ -118,7 +118,7 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 "A Jenkinsfile is a text file that defines a Jenkins pipeline using code, typically written in Groovy. 
+👉 "A Jenkinsfile is a text file that defines a Jenkins pipeline using code, typically written in Groovy Language. 
     It enables 'Pipeline as Code,' allowing CI/CD workflows to be version-controlled, automated, and repeatable.
 
 🔹 How is a Jenkinsfile Used?
@@ -132,6 +132,7 @@ EXPLAIN IN THIS ANSWER:-
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 6. How does Jenkins manage sensitive information like passwords or API keys within pipelines?
+   How do you handle secrets and credentails in jenkins?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -153,15 +154,206 @@ pipeline {
     }
 }
 🔹 Real-World Use Case:
-"In my DMS project, we stored AWS API keys and Docker registry credentials in the Jenkins Credentials Store. 
-This ensured secure deployments without exposing sensitive data in pipelines or logs."
+👉 "In my DMS project, we stored AWS API keys and Docker registry credentials in the Jenkins Credentials Store. 
+    This ensured secure deployments without exposing sensitive data in pipelines or logs."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
+7. How do you configure environment variables in jenkins?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "In Jenkins, environment variables can be configured at multiple levels: globally, per job, or within pipelines.
+     They help manage dynamic values like credentials, build parameters, and deployment configurations, 
+     making pipelines reusable and secure."
 
+🚀 Real-World Use Case:
+👉 "In my DMS project, we configured Jenkins environment variables to dynamically inject, SonarQube tokens, Kubernetes configs.
+     This made deployments secure, automated, and easily scalable across multiple environments."
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+8. What is a Jenkins Shared Library?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Jenkins Shared Library is a way to create reusable, modular pipeline code that can be shared across multiple Jenkins pipelines.
+     It helps eliminate code duplication, improves maintainability, and ensures standardization across CI/CD pipelines.
+     The library is stored in a version-controlled Git repository and can be used in pipelines by referencing it."
 
+Example: How to Use a Jenkins Shared Library in a Pipeline?
+1️⃣ Create a Git Repository for Shared Library:
+Create a repository named jenkins-shared-library with the following structure:
+jenkins-shared-library/
+│── vars/
+│   ├── buildApp.groovy     # Function for building the app
+│   ├── deployApp.groovy    # Function for deploying the app
+│── src/                    # (Optional) Custom Groovy classes
+│── resources/              # (Optional) Additional files
+│── README.md
+
+2️⃣ Create Shared Library Functions (buildApp.groovy):
+Stored in the vars/ directory of the shared library repository.
+
+3️⃣ Add the Shared Library to Jenkins
+Go to Jenkins Dashboard → Manage Jenkins → Configure System.
+Scroll down to Global Pipeline Libraries.
+Click Add and enter:
+Name: jenkins-shared-library
+Source Code Management: Git
+Repository URL: https://github.com/your-org/jenkins-shared-library.git
+Click Save.
+
+4️⃣ Use the Shared Library in a Jenkinsfile
+Now, in your application repository, create a Jenkinsfile and call the shared functions.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+9. How do you implement parallel stages(Builds) in Jenkins Pipeline?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "In Jenkins, we can implement parallel stages in a pipeline to speed up the execution of independent tasks. 
+     This is useful when multiple tasks, such as running tests on different environments, security scans, or deployments, 
+     can be executed simultaneously instead of sequentially. Parallel execution improves CI/CD efficiency and reduces build time."
+
+✅ Example: Parallel Stages in a Declarative Pipeline:
+pipeline {
+    agent any
+    stages {
+        stage('Parallel Execution') {
+            parallel {
+                stage('Unit Tests') {
+                    steps {
+                        sh 'mvn test'
+                    }
+                }
+                stage('Code Analysis') {
+                    steps {
+                        sh 'sonar-scanner'
+                    }
+                }
+                stage('Security Scan') {
+                    steps {
+                        sh 'trivy image my-app:latest'
+                    }
+                }
+            }
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+10. How do you implement parameterization in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "In Jenkins, parameterization allows users to pass dynamic values to a pipeline, making CI/CD workflows more flexible. 
+     This is useful for selecting environments, versions, or toggling features without modifying the pipeline code."
+
+✅ 1. Setting Up Parameters in Jenkins (UI Method):
+Go to Jenkins Dashboard → Your Pipeline Job → Configure.
+Check ‘This project is parameterized’.
+Click ‘Add Parameter’ and choose a parameter type (e.g., String, Choice, Boolean, etc.).
+Save the configuration.
+
+✅ 2. Using Parameters in a Declarative Pipeline:
+pipeline {
+    agent any
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to build')
+        choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: 'Select deployment environment')
+        booleanParam(name: 'DEBUG', defaultValue: false, description: 'Enable debug mode')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building branch: ${params.BRANCH}"
+                sh "git checkout ${params.BRANCH}"
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo "Deploying to ${params.ENV} environment"
+                sh "kubectl apply -f k8s/${params.ENV}-deployment.yaml"
+            }
+        }
+    }
+}
+✔ Users select values before execution.
+✔ Pipeline dynamically adjusts based on parameters.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+11. How do you archive artifacts when using an Artifactory repository in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+"In Jenkins, artifacts (like JARs, WARs,) can be archived and stored in Artifactory for version control and reusability. 
+This is done using the Artifactory plugin, which enables publishing artifacts to JFrog Artifactory directly from Jenkins pipelines."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+12. How do you handle failed jobs in Jenkins and troubleshoot them?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+✅ 1. Analyze Logs and Identify Root Cause:
+📌 Check Console Output & System Logs
+Go to Jenkins Dashboard → Failed Job → Console Output
+Check error messages, stack traces, or missing dependencies
+If needed, check system logs:
+cat /var/log/jenkins/jenkins.log
+
+✅ 2. Implement Automatic Recovery (Retries & Notifications):
+📌 Add a Retry Mechanism for Intermittent Failures
+📌 Send Failure Notifications (Email/Slack)
+ ✔ Notifies teams immediately when a job fails.
+
+✅ 3. Restart Jenkins & Clear Cache (If Needed)
+👉 Sometimes, jobs fail due to system issues. Restarting Jenkins may help:
+sudo systemctl restart jenkins  # Linux
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+13. What is a Multi-Branch Pipeline?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Jenkins Multi-Branch Pipeline automatically discovers, creates, and manages branches in a source control repository 
+    (like GitHub, GitLab, or Bitbucket), ensuring feature branches are tested before merging into main. 
+👉 This approach eliminates manual job creation, speeds up development, and improves code quality."
+
+✔ Use Case: Useful for feature branches, pull requests, and different environments (dev/stage/prod).
+✔ Benefit: Automates CI/CD for multiple branches without creating separate jobs for each.
+
+✅ How Multi-Branch Pipeline Works?
+1️⃣ Jenkins scans the repository and detects new branches automatically.
+2️⃣ For each branch with a Jenkinsfile, Jenkins creates a separate pipeline dynamically.
+3️⃣ When a branch is deleted from Git, Jenkins automatically removes it from Jenkins UI.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+14. How can builds be triggered in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Jenkins supports multiple ways to trigger builds, ensuring automation and flexibility in CI/CD pipelines. 
+     The most common methods include manual triggers, webhooks, scheduled builds, polling SCM, and triggering from other jobs."
+
+✅ 1. Manual Trigger (Run Job Manually)
+📌 How?
+👉 Go to Jenkins Dashboard → Select Job → Click ‘Build Now’
+✔  Used for on-demand builds during debugging or testing.
+
+✅ 2. Webhooks (GitHub, GitLab, Bitbucket Triggers)
+📌 How?
+👉 Configure a webhook in GitHub/GitLab/Bitbucket to notify Jenkins on code push or pull request.
+👉 In Jenkins, set "Build when a change is pushed to GitHub" under job configuration.
+✔  Automatically triggers builds when new code is pushed.
+
+✅ 3. SCM Polling (Checking for Code Changes in Git Repo)
+📌 How?
+👉 Enable "Poll SCM" in job settings and define a schedule (e.g., every 5 minutes):
+
+✅ 4. Scheduled Builds (Cron Jobs in Jenkins)
+📌 How?
+👉 Use Jenkins' "Build periodically" option and set a cron schedule.
+👉 Example (Run every night at 2 AM)
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
