@@ -193,23 +193,9 @@ EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ Secure Credentials & Secrets Management
 📌 Key Security Practices:
-✔ Use Jenkins Credentials Store – Store passwords, API keys, and SSH keys securely.
-✔ Integrate with Vault Services – Use HashiCorp Vault, AWS Secrets Manager, or Kubernetes Secrets.
-✔ Restrict Credential Exposure – Use credentials only in Jenkins pipelines and avoid printing them in logs.
-📌 Example: Using Jenkins Credentials in a Pipeline:
-pipeline {
-    agent any
-    environment {
-        AWS_SECRET = credentials('aws-secret-key')  // Stored in Jenkins Credentials
-    }
-    stages {
-        stage('Deploy') {
-            steps {
-                sh 'aws s3 sync ./build s3://my-bucket --secret $AWS_SECRET'
-            }
-        }
-    }
-}
+✅ Use Jenkins Credentials Store – Store passwords, API keys, and SSH keys securely.
+✔  Integrate with Vault Services – Use HashiCorp Vault, AWS Secrets Manager, or Kubernetes Secrets.
+
 🔹 Real-World Use Case:
 👉 "In my DMS project, we stored AWS API keys and Docker registry credentials in the Jenkins Credentials Store. 
     This ensured secure deployments without exposing sensitive data in pipelines or logs."
