@@ -2,6 +2,50 @@ In DevOps, Jenkins(CI/CD) in Realtime Senario Interview Questions and Answers:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. Can you explain the differences among these three concepts (CI/CD)?
 
+2. What CI/CD tool have you worked with, which one do you prefer?​
+
+3. Difference Between Declarative & Scripted Pipelines in Jenkins?
+
+4. What is "Pipeline as Code" in Jenkins?
+
+5. What is a Jenkinsfile & How is it Used?
+
+6. How does Jenkins manage sensitive information like passwords or API keys within pipelines?
+   How do you handle secrets and credentails in jenkins?
+   What security measures should be implemented in Jenkins to protect the CI/CD pipeline?
+
+7. How do you configure environment variables in jenkins?
+
+8. What is a Jenkins Shared Library?
+
+9. How do you implement parallel stages(Builds) in Jenkins Pipeline?
+
+10. How do you implement parameterization in Jenkins?
+
+11. How do you archive artifacts when using an Artifactory repository in Jenkins?
+
+12. How do you handle failed jobs in Jenkins and troubleshoot them?
+
+13. What is a Multi-Branch Pipeline?
+
+14. How can builds be triggered in Jenkins?
+
+15. How can Jenkins be configured to send notifications upon build completion or failure?
+
+16. How would you scale Jenkins to handle an increasing number of builds?
+    Can u explain the master-slave architecture in jenkins?
+
+17. What is the difference between Freestyle and Pipeline jobs in Jenkins?
+
+18. How to Distribute Jenkins Pipeline Execution to Multiple Agents?
+
+19. What is a blue-green environment, and how can you achieve it in Jenkins?
+
+20. How can Jenkins be configured to handle deployment rollbacks  in case of failures?
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Can you explain the differences among these three concepts (CI/CD)?
+
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
 👉 "CI/CD stands for Continuous Integration, Continuous Delivery, and Continuous Deployment,
@@ -95,7 +139,7 @@ node {
     However, for dynamic jobs requiring complex logic, we leveraged Scripted pipelines."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-4.  What is "Pipeline as Code" in Jenkins?
+4. What is "Pipeline as Code" in Jenkins?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
