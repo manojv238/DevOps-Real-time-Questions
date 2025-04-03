@@ -394,21 +394,20 @@ EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━
 ✅ 1. Components of Master-Slave Architecture:
 ✔  Jenkins Master (Controller):
-👉 Jenkins UI, job scheduling, and managing build execution.
+👉 The Master(Controller)is the central server responsible for managing jobs,scheduling builds,distributing tasks to workernodes(agents).
+👉 It handles the UI, stores job configurations, and plugin management and logs.
 👉 Assigns jobs to slaves (agents) based on labels and configurations.
-👉 Stores job configurations, plugins, and logs.
 
 ✔  Jenkins Slaves (Agents):
 👉 Executes build jobs assigned by the master.
+👉 Agents distribute workloads, enabling parallel execution, load balancing, and running jobs in different environments.
 👉 Can run on different operating systems (Linux, Windows, Mac).
-👉 May have specific tools or dependencies installed for specialized builds.
 
 ✅ 2. How Jenkins Master-Slave Works:
 1️⃣ Master schedules a build job based on triggers (SCM changes, manual, or scheduled).
 2️⃣ Master assigns the job to an appropriate slave based on labels, resources, and availability.
 3️⃣ Slave executes the build using the specified environment (Docker, Maven, Node.js, etc.).
 4️⃣ Results are sent back to the master for logging and reporting.
-
 ✔ Parallel execution is possible if multiple slaves are available.
 
 ✅ 3. How to Set Up Jenkins Agents:
@@ -417,7 +416,51 @@ EXPLAIN IN THIS ANSWER:-
 3️⃣ In job configuration, specify the agent label to execute builds on specific nodes.
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-17. 
+17. What is the difference between Freestyle and Pipeline jobs in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+👉 Freestyle Job: 
+✅ "Freestyle jobs in Jenkins are simple, configured via the UI with predefined steps for basic automation.
+✅  It is best for Simple CI/CD workflows, small projects.
+
+👉 Pipeline Job: 
+✅ Pipeline jobs use a Jenkinsfile written in Groovy, offering advanced scripting capabilities, version control,utomation flexibility.
+✅  It is best for Complex CI/CD workflows, microservices, infrastructure as code.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+18. How to Distribute Jenkins Pipeline Execution to Multiple Agents?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+👉 To distribute Jenkins Pipeline execution across multiple agents, I use the node, parallel, and matrix directives.
+👉 The node block assigns specific stages to designated agents, optimizing resource utilization.
+👉 The parallel directive speeds up execution by running independent tasks concurrently on different agents.
+👉 For multi-environment testing, the matrix directive automates execution across various platforms.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+19. What is a blue-green environment, and how can you achieve it in Jenkins?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+👉 "A Blue-Green deployment is a strategy used to minimize downtime and risk during deployments. 
+👉 It works by maintaining two identical environments: Blue (current live version) and Green (new version).
+👉 Traffic is switched to the Green environment only if the deployment is successful, 
+👉 we reduced deployment downtime from 30 minutes to near zero and minimized rollback risks, ensuring high availability."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+20. How can Jenkins be configured to handle deployment rollbacks  in case of failures?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Jenkins can handle deployment rollbacks by implementing automated failure detection, artifact versioning, 
+    and rollback scripts in Pipelines. 
+👉 I configure rollbacks using stored artifacts, infrastructure automation tools (Terraform, Ansible, Kubernetes), 
+    and deployment strategies like Blue-Green and Canary releases. 
+👉 This ensures that if a failure occurs, Jenkins can automatically restore the last stable version with minimal downtime."
+
+
+
 
 
 
