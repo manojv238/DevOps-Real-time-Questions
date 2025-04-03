@@ -133,7 +133,7 @@ EXPLAIN IN THIS ANSWER:-
 
 6. How does Jenkins manage sensitive information like passwords or API keys within pipelines?
    How do you handle secrets and credentails in jenkins?
-   
+   What security measures should be implemented in Jenkins to protect the CI/CD pipeline?
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -415,7 +415,9 @@ EXPLAIN IN THIS ANSWER:-
 1️⃣ Install and configure the "Jenkins SSH Build Agents" plugin.
 2️⃣ Connect remote machines as agents using SSH.
 3️⃣ In job configuration, specify the agent label to execute builds on specific nodes.
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+17. 
 
 
 
