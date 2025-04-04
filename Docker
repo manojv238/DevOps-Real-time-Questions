@@ -15,7 +15,7 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-"Docker follows a client-server architecture":
+🔹 "Docker follows a client-server architecture":
 👉 The Docker Client communicates with the Docker Daemon, which manages containers using containerd. 
 👉 Containers are created from Docker Images, which are stored in a Docker Registry like Docker Hub. 
 👉 Docker provides networking and storage options for containers. 
@@ -27,11 +27,11 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-Docker Image: 
+🔹 Docker Image: 
 👉 A read-only template containing application code, dependencies, and configurations needed to create a container.
 👉 Images are static and stored in a Docker registry.
 
-Docker Container:
+🔹 Docker Container:
 👉 Docker Containers are dynamic and can be started, stopped, or deleted.
 👉 Containers create isolated environments for running applications.
 -----------------------------------------------------------------------------------------------------------------------------------------
