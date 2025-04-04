@@ -36,12 +36,133 @@ EXPLAIN IN THIS ANSWER:-
 👉 Containers create isolated environments for running applications.
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-4. 
+4. What is a Dockerfile, and how do you use it to build images?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 A Dockerfile is a text file containing a set of instructions to automate the creation of a Docker image.
+    It defines everything needed to build an image, including the base image, dependencies, configurations, 
+    and commands to run an application inside a container.
 
+🔹 How to Use a Dockerfile to Build Images?
+1. Create a Dockerfile
+A simple Dockerfile for a Java application:
+-------------------------------------------------------------
+# Use an official OpenJDK image as the base
+FROM openjdk:17-jdk-slim
+# Set the working directory inside the container
+WORKDIR /app
+# Copy the application JAR file to the container
+COPY target/my-java-app.jar /app/app.jar
+# Expose the application port (if applicable)
+EXPOSE 8080 
+# Define the command to run the Java application
+CMD ["java", "-jar", "/app/app.jar"]
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+5. How can you use multi-stage builds to optimize Docker images?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Multi-stage builds in Docker allow you to create optimized Docker images by leveraging multiple build stages. 
 
+👉 To create a multi-stage build, you define multiple **FROM instructions in the Dockerfile, each representing a different build stages.
+
+👉 Each stage can use a different base image and perform specific build steps.
+
+👉 Intermediate build artifacts can be copied between stages using the **COPY --from instruction.
+
+👉 This technique helps reduce the image size by excluding build tools and dependencies from the final image.
+
+🔹Example: Java App with Maven in Dockerfile:
+# Stage 1: Build the application
+FROM maven:3.9.4-eclipse-temurin-17 AS builder
+WORKDIR /app
+COPY . /app
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create a lightweight runtime image
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=builder /app/target/my-java-app.jar /app/app.jar
+EXPOSE 8080
+CMD ["java", "-jar", "/app/app.jar"]
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+6. You're working on a project that requires Docker containers to persistently store data:
+   How do you handle persistent storage in Docker?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "To handle persistent storage in Docker, I use Docker volumes, 
+     Which allow data to persist even if the container stops or is deleted. 
+
+👉  Docker Volumes are managed by Docker and are ideal for storing logs, databases, or application data.
+    Volumes are stored in location [“/var/lib/docker/volume”].
+🔧 Example:
+# Create a volume
+docker volume create my-volume
+# Use it in a container
+docker run -d -v my-volume:/app/data my-image
+
+👉  I can also use bind mounts when I need to map host directories for development or configuration.
+    In multi-container setups, I define volumes in Docker Compose for better organization and reusability."
+🔧 Example:
+docker run -v /host/path:/container/path my-image
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+7. What is Docker Compose, and how is it used to manage multi-container applications?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Docker Compose is a tool used to define and manage multi-container Docker applications. 
+    It uses a YAML file to configure services, networks, and volumes, making it easy to manage complex app stacks. 
+
+👉  For example, I can spin up a Node.js app with MongoDB using docker-compose up, linking containers automatically. 
+    It’s ideal for local development, testing, and CI/CD pipelines."
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+8. How does Docker networking work? Explain bridge, host, and overlay networks.
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "Docker provides several networking drivers. The most common are bridge, host, and overlay. 
+👉 Bridge is the default, where containers get private IPs and talk over a virtual bridge.
+👉 Host network removes isolation and lets containers use the host's network stack — useful for high-performance or monitoring apps. 
+👉 Overlay networks allow containers on different hosts to communicate securely in a Docker Swarm cluster — perfect for distributed microservices.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+9. How do you check logs and debug issues in a running container?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+✅ How to Check Logs and Debug a Running Container:
+🔹 1. Check Container Logs:
+🔧 Examples:
+docker logs my-app             # Conatiner-id or Image
+docker logs -f my-app          # Follow logs in real time (like `tail -f`)
+docker logs --since 1h my-app  # Logs from the last hour
+
+🔹 2. Get Inside a Running Container (for interactive debugging):
+docker exec -it <container_name> /bin/bash
+
+🔹 3. Check Container Stats and Health:
+🔧 Examples:
+docker stats                      ----> View the CPU/Memory Usage
+docker inspect <container_name>   ----> Inspect container details
+docker inspect <container_name> --format='{{json .State.Health}}'   ---> Check container health (if health checks are configured)
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+10. How can you pass environment variables securely to Docker containers
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 "You can pass environment variables using the --env flag or .env files, but for sensitive data, 
+    it’s best to use Docker Secrets, which encrypts secrets at rest and exposes them only as files inside the container. 
+
+👉  In production, I prefer integrating with external secret managers like AWS Secrets Manager or Vault to fetch secrets dynamically. 
+    This ensures minimal exposure and keeps credentials secure."
+------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
