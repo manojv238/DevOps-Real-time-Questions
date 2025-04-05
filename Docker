@@ -367,14 +367,3 @@ There are various ways to monitor Docker containers, including:
 👉  Using Docker's built-in container monitoring commands, such as docker stats and docker container stats, to view resource usage statistics.
 👉 Integrating with container monitoring and logging tools like Prometheus, Grafana, or
     ELK stack (Elasticsearch, Logstash, Kibana) to collect and analyze container metrics and logs.
-------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
