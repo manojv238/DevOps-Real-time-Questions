@@ -164,27 +164,57 @@ EXPLAIN IN THIS ANSWER:-
     This ensures minimal exposure and keeps credentials secure."
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
+11. You're responsible for securing the Docker containers hosting your organization's sensitive applications. 
+    How do you secure Docker containers?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 First, I ensured that only trusted base images from official repositories were used and 
+    regularly updated the Docker images and host OS with the latest patches.
 
+👉 I can integrate Trivy into our CI/CD pipeline to automatically scan images for known vulnerabilities before deployment. 
 
+👉 I can limit resource usage with CPU and memory constraints, avoid mounting sensitive host directories like /var/run/docker.sock
 
+👉 I can Implement network segmentation using Docker or Kubernetes network policies.
 
+👉  Additionally, I can configure Monitoring container activity and logging for security analysis.
+------------------------------------------------------------------------------------------------------------------------------------------------
 
+12. Can you describe a situation where you optimized a Dockerfile for faster build times or smaller image size?
+    How can you reduce Docker image size and optimize performance?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+"To reduce Docker image size and optimize performance":
+👉 I use minimal base images(Alpine) and apply multi-stage builds to separate build-time and runtime layers,
+    this has helped reduce image sizes by over 70%.
+👉 I optimize Dockerfiles by combining RUN commands, cleaning temp files, and using .dockerignore to avoid copying unnecessary files.
+------------------------------------------------------------------------------------------------------------------------------------------------
 
+13. How you used Docker in combination with a Jenkins (CI/CD) system?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+We integrated Docker with Jenkins:
+👉 During the build stage, Jenkins would trigger a job that builds a new Docker image and pushes it to a Docker registry. 
+👉 During the deployment stage, this image was pulled from the registry and deployed to the production environment using Kubernetes. 
+👉 This approach ensured uniformity across all stages of the deployment process.
+------------------------------------------------------------------------------------------------------------------------------------------------
 
+14. You're managing a Docker environment and need to ensure that each container operates within defined CPU and memory limits. 
+    How do you limit the CPU and memory usage of a Docker container?
 
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Docker allows you to limit the CPU and memory usage of a container using resource constraints. 
+👉 You can set the CPU limit with the --cpu option and the memory limit with the --memory option 
+    when running the container using the docker run command.
 
+For example, docker run --cpu 2 --memory 1g mycontainer limits the container to use a maximum of 2 CPU cores and 1GB of memory.
+------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
+15. 
 
 
 
