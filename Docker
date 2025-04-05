@@ -58,6 +58,33 @@ COPY target/my-java-app.jar /app/app.jar
 EXPOSE 8080 
 # Define the command to run the Java application
 CMD ["java", "-jar", "/app/app.jar"]
+--------------------------------------------------------------
+
+FROM ---> To pull the base image(docker-hub).
+
+RUN ----> To execute linux commands.
+
+COPY ----> To copy a directory from local machine to the docker container.
+
+ADD -----> Zip files it will Unzip automatically and copy in the container.
+
+CMD -----> Some commands to start the the jar files but,(Variables are Dynamically or pass values/argues changed). 
+
+ENTRYPOINT ----> Some commands or scrpipts to start the jar files but, (Variables are fixed values or arguments).
+
+WORKDIR -------> It sets the path of working directory.
+
+ENV ----> It sets a environment variables.
+
+EXPOSE -> It associates a specific port to enable networking between container and to the outside.....
+
+MAINTAINER ----> It defines a full name and email address of the image creator.
+
+USER ---> It sets the USERNAME which is to run the container.
+
+VOLUME -> It is used to enable access from container to a directory on the host machine.
+
+LABEL --> It allows to add a label to your docker image.
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 5. How can you use multi-stage builds to optimize Docker images?
@@ -214,7 +241,42 @@ EXPLAIN IN THIS ANSWER:-
 For example, docker run --cpu 2 --memory 1g mycontainer limits the container to use a maximum of 2 CPU cores and 1GB of memory.
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
-15. 
+15. You've noticed many stopped containers and unused networks taking up space. 
+    Describe how you would clean up these resources effectively to optimize the Docker environment.
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 The docker prune command is used to clean up unused Docker resources, such as containers, volumes, networks, and images.
+👉 It helps reclaim disk space and tidy up the Docker environment by removing objects that are not in use.
+🔹 There are different types of `docker prune` commands:
+
+- `docker container prune`: Removes stopped containers.
+- `docker volume prune`: Deletes unused volumes.
+- `docker network prune`: Cleans up unused networks.
+- `docker image prune`: Removes unused images.
+
+👉 Running docker system prune combines these functionalities into one command,
+    ensuring that Docker removes any resources not associated with a running container.
+
+✅ The docker system prune command should be used with caution as it permanently deletes unused resources. 
+    Any data associated with them will be lost.
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+16. A company wants to create thousands of Containers. Is there a limit on how many containers you can run in Docker?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 The amount of containers that may be run under Docker has no explicitly specified limit. 
+👉 But it all relies on the constraints, particularly the hardware constraints. 
+👉 The size of the program and the number of CPU resources available are two major determinants of this restriction. 
+👉 If your program isn't too large and you have plenty of CPU resources, we can run a lot of containers.
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+17. 
+
+
+
+
 
 
 
