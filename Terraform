@@ -1,2 +1,21 @@
-In DevOps, Kubernetes(k8's) in Realtime Senario Interview Questions and Answers:
+In DevOps, Terraform in Realtime Senario Interview Questions and Answers:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. What is Terraform and How it works?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+Terraform is an open-source Infrastructure as Code (IaC) tool by HashiCorp Language,
+that allows me to define and provision cloud infrastructure using a declarative language called HCL.
+
+It works by first writing infrastructure configurations in .tf files. Then, 
+I run terraform init to initialize the working directory, terraform plan to preview the changes, 
+and terraform apply to provision the actual resources.
+
+
+
+
+
+
+
+
+
