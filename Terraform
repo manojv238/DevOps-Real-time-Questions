@@ -118,6 +118,19 @@ Environment Isolation : Use the same module across dev, staging, and prod with d
 📦 Types of Modules:
 Root Module   : The primary working directory where Terraform commands are run.
 Child Modules : Modules called within the root module, either locally or from remote sources (e.g., GitHub, Terraform Registry).
+
+✅ Example module structure:
+terraform-project/
+│── main.tf
+│── variables.tf
+│── outputs.tf
+│── terraform.tfvars
+│── modules/
+│   └── ec2-instance/
+│       ├── main.tf 
+│       ├── variables.tf
+│       ├── outputs.tf
+│── main.tf (modules path and pass values)
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 5. How do you use variables and outputs in Terraform to make configurations reusable?
