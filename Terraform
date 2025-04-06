@@ -305,9 +305,67 @@ EXPLAIN IN THIS ANSWER:-
 
 👉 Here's an example: (terraform destroy -target=aws_instance.my_instance)
 👉 In this example, only the AWS instance named my_instance would be destroyed, leaving other resources managed by Terraform intact.
+---------------------------------------------------------------------------------------------------------------------------------------
+############################# Terraform real-time commands ####################################
++----------------------------------------------------------------------------+
+|  🌱 Initialization                                                        |
++----------------------------------------------------------------------------+
+| terraform init         # Initialize Terraform in the working directory     |
+| terraform validate     # Validate the configuration files                  |
+| terraform fmt          # Format the Terraform code                         |
++----------------------------------------------------------------------------+
 
++----------------------------------------------------------------------------+
+|  🚀 Plan & Apply                                                          |
++----------------------------------------------------------------------------+
+| terraform plan         # To preview plan without applying changes          |
+| terraform apply        # Deploy or Apply the Terraform changes             |
+| terraform apply -auto-approve  # Apply without confirmation prompt         |
++----------------------------------------------------------------------------+
 
++----------------------------------------------------------------------------+
+|  ❌ Destroy Resources                                                     |
++----------------------------------------------------------------------------+
+| terraform destroy      # Destroy all resources                             |
+| terraform destroy -auto-approve  # Destroy without confirmation            |
++----------------------------------------------------------------------------+
 
++----------------------------------------------------------------------------+
+|  📄 State Management                                                       |
++----------------------------------------------------------------------------+
+| terraform state list   # List all resources in the state file              |
+| terraform state show <resource>  # Show details of a specific resource     |
+| terraform refresh      # Sync state file with real-world infrastructure    |
++----------------------------------------------------------------------------+
+
++----------------------------------------------------------------------------+
+|  🎯 Target Resources                                                      |
++----------------------------------------------------------------------------+
+| terraform apply -target=<resource>  # Apply changes only to a resource     |
+| terraform destroy -target=<resource>  # Destroy only a specific resource   |
++----------------------------------------------------------------------------+
+
++----------------------------------------------------------------------------+
+|  🔍 Output & Debugging                                                    |
++----------------------------------------------------------------------------+
+| terraform output       # Show output values                                |
+| TF_LOG=DEBUG terraform apply  # Enable debugging logs                      |
++----------------------------------------------------------------------------+
+
++----------------------------------------------------------------------------+
+|  🔑 Variables Handling                                                    |
++----------------------------------------------------------------------------+
+| terraform apply -var="key=value"  # Pass a variable manually               |
+| terraform apply -var-file="vars.tfvars"  # Use a variable file             |
++----------------------------------------------------------------------------+
+
++----------------------------------------------------------------------------+
+|  🛠 Modules & Workspaces                                                   |
++----------------------------------------------------------------------------+
+| terraform get          # Download required modules                         |
+| terraform workspace list  # List all workspaces                            |
+| terraform workspace select <name>  # Switch to another workspace           |
++----------------------------------------------------------------------------+
 
 
 
