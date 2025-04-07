@@ -19,6 +19,35 @@ In DevOps, Ansible in Realtime Senario Interview Questions and Answers:
 9. How do you use Handlers in Ansible? How do you implement when conditions in a playbook?
 
 10. How do you manage sensitive data securely in Ansible using Vault?
+
+11. Can you explain Push and Pull mechanism in Anisble? 
+
+12. Why Do We Use Tags in Ansible?
+
+13. Let say there is a playbook written, there is a variable name , so how do you access it?
+
+14. Why Do We Use Ansible Facts?
+
+15. What Is Idempotency in Ansible? 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+### what exactly you doing in ansible in current project?
+✅ Sample Interview Answer:
+In my current project, I use Ansible extensively for infrastructure automation and configuration management. 
+My key responsibilities include:
+
+👉 Writing reusable Ansible playbooks and roles to automate provisioning of cloud resources and server configurations.
+
+👉 Managing Kubernetes deployments by integrating Ansible with Helm and Terraform for seamless infrastructure setup.
+
+👉 Using Ansible Vault to securely handle sensitive data like API keys and credentials.
+
+👉 Automating CI/CD tasks such as application deployments, system updates, and service restarts as part of Jenkins pipelines.
+
+👉 Implementing idempotent playbooks to ensure reliable, repeatable infrastructure changes across environments — dev, staging, and prod.
+
+✅ For example:
+👉 I recently created an Ansible role to automate the installation and configuration of Prometheus and Grafana across multiple environments,
+    which significantly reduced manual setup time and ensured consistency.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. What is Ansible and how does it work?
@@ -71,10 +100,10 @@ EXPLAIN IN THIS ANSWER:-
 
 EXPLAIN IN THIS ANSWER:-
 ━━━━━━━━━━━━━━━━━━━━━━━━
-👉 Inventory defines the list of servers where automation tasks run. 
-1. Static Inventory (Default: /etc/ansible/hosts):-
-2. Dynamic Inventory (For Cloud Environments: AWS, Azure, GCP, etc.):-
+👉 Ansible inventory is a file or source that contains information about managed hosts (nodes),where Ansible will execute tasks.
+👉 It defines groups of hosts and their connection details, such as IP addresses, SSH users, and authentication methods.
 
+1. Static Inventory (Default: /etc/ansible/hosts):-
 👉 I've used both static and dynamic inventories depending on the environment. 
    A simple file with manually defined hosts and groups like [webservers], [dbservers].
 🔹 Example (inventory.ini): "ini-Extention"
@@ -86,6 +115,7 @@ web2 ansible_host=192.168.1.11 ansible_user=ubuntu
 [db]
 db1 ansible_host=192.168.1.20 ansible_user=root
 --------------------------------------------------------
+2. Dynamic Inventory (For Cloud Environments: AWS, Azure, GCP, etc.):-
 👉 In cloud environments like AWS, I used dynamic inventory with the aws_ec2 plugin, 
     where hosts were grouped automatically based on tags (e.g., Environment=dev or App=dms). 
     This way, the inventory was always up to date without manual intervention.
@@ -199,91 +229,24 @@ my-ansible-project/
     Each team could work independently on their own role, which improved collaboration and made CI/CD integration much easier."
 -----------------------------------------------------------------------------------------------------------------------------------------
 
-8. What is an Ansible Module?
+8. What is an Ansible Module? How many Types of Ansible Modules?
 
 EXPLAIN IN THIS ANSWER:-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔹 Types of Ansible Modules (With Examples)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📌 1. System Modules:
-➤ user, service, cron, hostname
-✅ Example: Create a user
----
-- name: Create a new user
-  user:
-    name: devops_user
-    state: present
-    groups: sudo
-------------------------------------------
-📌 2. Package Modules:
-➤ apt, yum, dnf, pip
-✅ Example: Install Nginx
----
-- name: Install Nginx on Ubuntu
-  apt:
-    name: nginx
-    state: present
------------------------------------------
-📌 3. File Modules:
-➤ file, copy, template, fetch
-✅ Example: Copy a configuration file
----
-- name: Copy a file
-  copy:
-    src: /home/user/config.conf
-    dest: /etc/config.conf
-    mode: '0644'
-----------------------------------------
-📌 4. Cloud Modules:
-➤ ec2_instance, gcp_compute_instance, azure_rm_virtualmachine
-✅ Example: Launch an EC2 instance
----
-- name: Launch EC2 instance
-  amazon.aws.ec2_instance:
-    name: my-instance
-    state: running
-    instance_type: t2.micro
-    image_id: ami-12345678
----------------------------------------
-📌 5. Networking Modules:
-➤ ios_config, firewalld, iptables
-✅ Example: Enable HTTP in Firewalld
----
-- name: Allow HTTP traffic
-  firewalld:
-    service: http
-    state: enabled
-    permanent: yes
-    immediate: yes
--------------------------------------
-📌 6. Kubernetes Modules:
-➤ k8s, helm
-✅ Example: Deploy an Nginx Pod
----
-- name: Deploy Nginx Pod in Kubernetes
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Pod
-      metadata:
-        name: nginx-pod
-      spec:
-        containers:
-          - name: nginx
-            image: nginx:latest
------------------------------------------
-📌 7. CI/CD & DevOps Modules:
-➤ git, docker_container, jenkins_job
-✅ Example: Run an Nginx container
----
-- name: Run Nginx container
-  docker_container:
-    name: nginx
-    image: nginx:latest
-    state: started
-    ports:
-      - "80:80"
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Ansible modules are pre-built scripts and can be used in playbooks to automate tasks.
+
+🔹 Types of Ansible Modules:-
+1. Core Modules:
+👉 These are the modules that are shipped and maintained by Ansible itself. They are fully supported and stable.
+
+🔹 Examples: (apt, yum, service, copy, file, template, user, debug, git)
+🔹 Used for: package management, file handling, user creation, services, etc.
+
+2. Extras/Community Modules:
+👉 These are community-contributed modules that are not part of the core but are still available via Ansible Galaxy or collections.
+
+🔹 Examples: Cloud modules like (amazon.aws.ec2, community.docker.docker_container)
+🔹 Used for: Cloud provisioning (AWS, Azure, GCP), Docker, Kubernetes, etc..
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 9. How do you use Handlers in Ansible? How do you implement when conditions in a playbook?
@@ -329,6 +292,139 @@ vars_files:
     and other secrets in Vault-encrypted files inside group_vars and host_vars.
     This allowed us to safely version-control our playbooks in Git without exposing credentials.
 👉 We used a vault password file secured in Jenkins to run playbooks automatically without human intervention.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+11. Can you explain Push and Pull mechanism in Anisble? 
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Ansible primarily uses a (push-based model), where the control node(Install-Ansible) pushes configurations to target machines over SSH.
+👉 This approach is agentless, simple to set up, and allows centralized control, 
+    which is great for consistent deployments across environments.
+
+👉 However, Ansible also supports a pull model using ansible-pull, 
+    where each node pulls playbooks from a Git repository and applies them locally. 
+👉 This is useful in dynamic or auto-scaling environments, 
+    like when new EC2 instances come up and configure themselves without needing a central controller to push.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+12. Why Do We Use Tags in Ansible?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 We use tags in Ansible to run specific parts of a playbook selectively, without executing the entire playbook.
+👉 This is especially useful in large playbooks where you only want to run a few tasks.
+👉 Tags help improve execution speed, support targeted debugging, and reduce downtime in production environments
+🔹 Example:
+- name: Install and configure nginx
+  hosts: web
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+      tags: install
+
+    - name: Configure nginx
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      tags: config
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+      tags: restart
+
+👉 Run only the config task: (ansible-playbook site.yml --tags "config")
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+13. Let say there is a playbook written, there is a variable name , so how do you access it?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+Let’s say your playbook has a variable called my_name.
+🔹 Defined in the playbook or inventory:
+---
+- name: Demo playbook
+  hosts: all
+  vars:
+    my_name: "John Doe"
+  tasks:
+    - name: Print the variable
+      debug:
+        msg: "My name is {{ my_name }}"
+
+🧪 Output when run: ("msg": "My name is John Doe")
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+14. Why Do We Use Ansible Facts?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Ansible facts are system properties automatically collected from managed hosts at runtime.
+    We use these facts to make our playbooks more dynamic and context-aware.
+
+🔍 What Kind of Facts?
+👉 Ansible gathers facts like:
+Hostname   (ansible_hostname)
+IP address (ansible_default_ipv4.address)
+OS and distribution (ansible_os_family, ansible_distribution)
+CPU, memory, architecture, and more...
+
+For example: 
+👉 Installing packages based on the OS type, or placing files in the right directory structure depending on the system.
+✅ Example Use Case:
+- name: Install web server based on OS
+  hosts: all
+  tasks:
+    - name: Install Apache on Debian-based systems
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"   -----------> Ansible Fact
+
+    - name: Install HTTPD on RedHat-based systems
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == "RedHat"    -----------> Ansible Fact
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+15. What Is Idempotency in Ansible?
+
+EXPLAIN IN THIS ANSWER:-
+━━━━━━━━━━━━━━━━━━━━━━━━
+👉 Idempotency means that running the same Ansible playbook or task multiple times will always produce the same result 
+   and leave the system in the same desired state, -- without making unnecessary changes.
+
+For Example: 
+👉 Let’s say you have a task to install nginx,
+👉 Whether you run it once or five times, Ansible won’t reinstall nginx if it’s already present
+    because it checks the system state before acting.
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
